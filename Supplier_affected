@@ -1,0 +1,9 @@
+/**
+    * return supplier affected (overlaying the flood zone)
+*/
+RETURN
+  SELECT A.ADDRNUMBER,
+         'Y' AS "AFFECTED"
+  FROM   "DIM_S4_BP_ADDRESS_<GROUPID>" AS A
+         INNER JOIN "LT_EPI_FLOOD" AS B
+  ON b."SHAPE".St_srid(4326).st_transform(3857).ST_Contains(a."Location")= 1;
