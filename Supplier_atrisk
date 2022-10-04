@@ -1,0 +1,23 @@
+RETURN
+SELECT 
+  "ADDRNUMBER", 
+  "At_Risk", 
+  "Distance"
+FROM 
+  (
+    SELECT 
+      a."ADDRNUMBER", 
+      'Y' as "At_Risk",
+      MIN(
+        b."SHAPE".st_srid(4326).st_transform(3857).st_distance(new st_point(a.longitude, a.latitude).st_srid(4326).st_transform(3857)
+        )
+      ) AS "Distance" 
+    FROM 
+      "DIM_S4_GEOLOC" a, 
+      "LT_EPI_FLOOD" b 
+    group by 
+      a."ADDRNUMBER", 
+      'Y'
+  ) 
+where 
+  "Distance" between 100 and 2000;
